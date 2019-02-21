@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Dimensions} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 
-export default class DaysView extends Component{
+export default class OneDaysView extends Component{
 
     /************************** 生命周期 **************************/
     constructor(props) {
@@ -21,7 +21,6 @@ export default class DaysView extends Component{
     * 初始化参数
     * */
     initializeParams() {
-        this.SCREENW = Dimensions.get('window').width;
         this.state = {
             year: 0,
             month: 0,
@@ -35,12 +34,12 @@ export default class DaysView extends Component{
     /*
     * 创建天数视图
     * */
-    createDaysView() {
+    createDaysView = () => {
         //初始化参数
         const { year, month, day, originYear, originMonth, originDay } = this.state;
         let dayList = [];
 
-        //当前月天数
+        //当前查询的月总天数
         let days = this.getDaysOnMonth(year, month);
         //上个月天数
         let preDays = ( month == 1 ? this.getDaysOnMonth(year - 1,12) : this.getDaysOnMonth(year,month - 1) );
@@ -64,6 +63,7 @@ export default class DaysView extends Component{
                 'day': i,
                 'isCurrentMonth': true
             };
+            //判断是否是上次选中的那天
             if (i == day && year == originYear && month == originMonth) item['isSelect'] = true;
             else item['isSelect'] = false;
             dayList.push(item);
@@ -78,17 +78,17 @@ export default class DaysView extends Component{
             });
         }
 
-        return this.createDaysDetailView(dayList);
+        return dayList;
     }
 
     /*
     * 创建天数日期视图
     * */
-    createDaysDetailView(list) {
-        const { SCREENW } = this;
+    createDaysDetailView = (list) => {
+        const { width } = this.props;
 
         //左边间隙
-        let space = (SCREENW - 280)/8;
+        let space = (width - 280)/8;
         //文本颜色,背景颜色,圆角
         let textColor, bgColor, radius;
 
@@ -111,26 +111,29 @@ export default class DaysView extends Component{
     /*
     * 获取某年某月多少天
     * */
-    getDaysOnMonth(year, month) {
+    getDaysOnMonth = (year, month) => {
         return (new Date(year, month, 0)).getDate();
     }
 
     /*
     * 获取某天是星期几
     * */
-    getDayDay(year, month, day) {
+    getDayDay = (year, month, day) => {
         return (new Date(year, month, day)).getDay();
     }
 
     //选择某天
-    selectDay(item) {
+    selectDay = (item) => {
         if (item['isCurrentMonth']) {
             if (this.props.selectDay) this.props.selectDay(item['day']);
         }
     }
     /************************** 子组件回调方法 **************************/
     /************************** 外部调用方法 **************************/
-    modifyDay(data = {}) {
+    /*
+    * 修改显示的日期
+    * */
+    modifyDay = (data = {}) => {
         this.setState({
             year: data['year'],
             month: data['month'],
@@ -148,9 +151,15 @@ export default class DaysView extends Component{
         const { year } = this.state;
         if (year == 0) return null;
 
+        //先获取天数数组,为了让底部高度恒定，不然日期高度变来变去，很蛋疼
+        let dayList = this.createDaysView();
+
         return (
-            <View style={[styles.MainView]}>
-                {this.createDaysView()}
+            <View>
+                <View style={[styles.MainView]}>
+                    {this.createDaysDetailView(dayList)}
+                </View>
+                <View style={[{height: (6-dayList.length/7) * 40, backgroundColor: 'white'}]}/>
             </View>
         )
     }
