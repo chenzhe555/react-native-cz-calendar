@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 
-export default class OneSelectDateView extends Component{
+export default class SelectDateView extends Component{
 
     /************************** 生命周期 **************************/
     constructor(props) {

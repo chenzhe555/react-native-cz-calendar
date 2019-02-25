@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
 
-export default class OneDayTextView extends Component{
+export default class DayTextView extends Component{
 
     /************************** 生命周期 **************************/
     constructor(props) {

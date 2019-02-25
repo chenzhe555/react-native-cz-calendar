@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-export default class OneTopButtonsView extends Component{
+export default class TopButtonsView extends Component{
 
     /************************** 生命周期 **************************/
     constructor(props) {

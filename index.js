@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Modal, Platform, NativeModules, Dimensions } from 'react-native';
-import OneTopButtonsView from './OneTopButtonsView';
-import OneSelectDateView from './OneSelectDateView';
-import OneDayTextView from './OneDayTextView';
-import OneDaysView from './OneDaysView';
+import TopButtonsView from './TopButtonsView';
+import SelectDateView from './SelectDateView';
+import DayTextView from './DayTextView';
+import DaysView from './DaysView';
 const { RNCzCalendar } = NativeModules;
 
 /*
@@ -28,7 +28,7 @@ export default class CZCalendar extends Component{
     }
 
     componentDidMount() {
-        if (typeof this.props.topSpace == 'undefined' && typeof CZCalendar.BottomSpace == 'undefined' && Platform.OS == 'ios') {
+        if (typeof this.props.bottomSpace == 'undefined' && typeof CZCalendar.BottomSpace == 'undefined' && Platform.OS == 'ios') {
             RNCzCalendar.getBottomSpace( (result) => {
                 CZCalendar.BottomSpace = result;
                 this.bottomSpace = result;
@@ -184,18 +184,18 @@ export default class CZCalendar extends Component{
             >
                 <View style={[styles.MainView]}>
                     <View>
-                        <OneTopButtonsView
+                        <TopButtonsView
                             confirm={this._confirmAction}
                             cancel={this.hide}
                         />
-                        <OneSelectDateView
+                        <SelectDateView
                             evaluateView={ (oneSelectDateView) => {this.oneSelectDateView = oneSelectDateView} }
                             modifyMonth={this._modifyMonth}
                         />
-                        <OneDayTextView
+                        <DayTextView
                             width={SCREENW}
                         />
-                        <OneDaysView
+                        <DaysView
                             evaluateView={ (oneDaysView) => {this.oneDaysView = oneDaysView} }
                             width={SCREENW}
                             selectDay={this._selectDay.bind(this)}
